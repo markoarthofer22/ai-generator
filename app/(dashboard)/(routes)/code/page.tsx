@@ -21,9 +21,12 @@ import { Loader } from '@/components/loader';
 import { cn } from '@/lib/utils';
 import UserAvatar from '@/components/user-avatar';
 import BotAvatar from '@/components/bot-avatar';
+import { useProModal } from '@/hooks/use-pro-modal';
+import toast from 'react-hot-toast';
 
 const CodePage = () => {
   const router = useRouter();
+  const proModal = useProModal();
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -51,8 +54,12 @@ const CodePage = () => {
       setMessages((current) => [...current, userMessage, res.data]);
 
       form.reset();
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      if (error?.response?.status === 403) {
+        proModal.onOpen();
+      } else {
+        toast.error('Something went wrong.');
+      }
     } finally {
       router.refresh();
     }

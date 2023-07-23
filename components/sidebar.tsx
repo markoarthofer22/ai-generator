@@ -13,8 +13,9 @@ import {
   MixIcon,
 } from '@radix-ui/react-icons';
 import { Montserrat } from 'next/font/google';
-import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
+import FreeCounter from '@/components/free-counter';
+import { cn } from '@/lib/utils';
 
 const montserrat = Montserrat({ weight: '600', subsets: ['latin'] });
 
@@ -62,7 +63,12 @@ const routes = [
   },
 ];
 
-const SideBar = () => {
+interface ISideBarProps {
+  limit: number;
+  isPro: boolean;
+}
+
+const SideBar = ({ limit = 0, isPro = false }: ISideBarProps) => {
   const pathname = usePathname();
   return (
     <div className='flex h-full flex-col space-y-4 bg-[#111827] py-4 text-white'>
@@ -95,6 +101,7 @@ const SideBar = () => {
           ))}
         </div>
       </div>
+      <FreeCounter isPro={isPro} limit={limit} />
     </div>
   );
 };

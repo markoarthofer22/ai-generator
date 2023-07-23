@@ -16,9 +16,12 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Empty } from '@/components/empty';
 import { Loader } from '@/components/loader';
+import { useProModal } from '@/hooks/use-pro-modal';
+import toast from 'react-hot-toast';
 
 const MusicPage = () => {
   const router = useRouter();
+  const proModal = useProModal();
   const [music, setMusic] = useState<string>();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -38,7 +41,12 @@ const MusicPage = () => {
 
       setMusic(res.data.audio);
       form.reset();
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response?.status === 403) {
+        proModal.onOpen();
+      } else {
+        toast.error('Something went wrong.');
+      }
       console.log(error);
     } finally {
       router.refresh();
