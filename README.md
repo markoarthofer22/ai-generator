@@ -45,3 +45,7 @@ ui
 https://ui.shadcn.com/
 db
 https://app.planetscale.com/markoarthofer95/ai-genius-sass
+
+link to page
+
+https://ai-generator-beta.vercel.app/
